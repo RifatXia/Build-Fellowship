@@ -3,6 +3,10 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import classification_report
 from sklearn.ensemble import RandomForestClassifier
+from xgboost import XGBClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
 
 # Load provided_data.csv
 data = pd.read_csv('provided_data.csv', header=None, names=['frame', 'xc', 'yc', 'w', 'h', 'effort'])
@@ -61,24 +65,42 @@ y_train = y_lagged.iloc[:split_index]
 y_test = y_lagged.iloc[split_index:]
 frames_test = frames_lagged.iloc[split_index:]  # Frames corresponding to test set
 
-# Train a Random Forest classifier
-clf = RandomForestClassifier(n_estimators=100, random_state=42)
-clf.fit(X_train, y_train)
+# Define models to evaluate
+models = {
+    "Random Forest": RandomForestClassifier(n_estimators=100, random_state=42),
+    "XGBoost": XGBClassifier(use_label_encoder=False, eval_metric='logloss'),
+    "Logistic Regression": LogisticRegression(max_iter=1000),
+    "Support Vector Classifier": SVC(),
+    "Decision Tree": DecisionTreeClassifier(random_state=42)
+}
 
-# Predict on the test set
-y_pred = clf.predict(X_test)
+# Store classification reports
+report_lines = []
 
-# Compute classification report
-report = classification_report(y_test, y_pred)
+for model_name, model in models.items():
+    # Train the model
+    model.fit(X_train, y_train)
+    
+    # Predict on the test set
+    y_pred = model.predict(X_test)
+    
+    # Compute classification report
+    report = classification_report(y_test, y_pred, output_dict=True)
+    
+    # Format the report for easy visibility
+    report_lines.append(f"Model: {model_name}\n")
+    report_lines.append(f"Class 0 - Precision: {report['0']['precision']:.2f}, Recall: {report['0']['recall']:.2f}, F1-Score: {report['0']['f1-score']:.2f}, Support: {report['0']['support']}\n")
+    report_lines.append(f"Class 1 - Precision: {report['1']['precision']:.2f}, Recall: {report['1']['recall']:.2f}, F1-Score: {report['1']['f1-score']:.2f}, Support: {report['1']['support']}\n")
+    report_lines.append(f"Accuracy: {report['accuracy']:.2f}\n")
+    report_lines.append(f"Macro Avg - Precision: {report['macro avg']['precision']:.2f}, Recall: {report['macro avg']['recall']:.2f}, F1-Score: {report['macro avg']['f1-score']:.2f}\n")
+    report_lines.append(f"Weighted Avg - Precision: {report['weighted avg']['precision']:.2f}, Recall: {report['weighted avg']['recall']:.2f}, F1-Score: {report['weighted avg']['f1-score']:.2f}\n")
+    report_lines.append("\n")
 
-# Write classification report to a text file
-with open('report.txt', 'w') as f:
-    f.write(report)
-
-# Optionally, print the report to the console as well
-print(report)
+# Write the comparison report to a text file
+with open('submission/report.txt', 'w') as f:
+    f.writelines(report_lines)
 
 # Write predictions to CSV with the same syntax as target.csv
 predictions_df = pd.DataFrame({'frame': frames_test, 'value': y_pred})
-predictions_df.to_csv('predictions.csv', index=False)
+predictions_df.to_csv('submission/predictions.csv', index=False)
 
