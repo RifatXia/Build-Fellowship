@@ -74,8 +74,11 @@ models = {
     "Decision Tree": DecisionTreeClassifier(random_state=42)
 }
 
-# Store classification reports
+# Store classification reports and track the best model
 report_lines = []
+best_model_name = None
+best_accuracy = 0
+best_y_pred = None
 
 for model_name, model in models.items():
     # Train the model
@@ -95,12 +98,20 @@ for model_name, model in models.items():
     report_lines.append(f"Macro Avg - Precision: {report['macro avg']['precision']:.2f}, Recall: {report['macro avg']['recall']:.2f}, F1-Score: {report['macro avg']['f1-score']:.2f}\n")
     report_lines.append(f"Weighted Avg - Precision: {report['weighted avg']['precision']:.2f}, Recall: {report['weighted avg']['recall']:.2f}, F1-Score: {report['weighted avg']['f1-score']:.2f}\n")
     report_lines.append("\n")
+    
+    # Check if this model is the best based on accuracy
+    if report['accuracy'] > best_accuracy:
+        best_accuracy = report['accuracy']
+        best_model_name = model_name
+        best_y_pred = y_pred
 
 # Write the comparison report to a text file
 with open('submission/report.txt', 'w') as f:
     f.writelines(report_lines)
 
-# Write predictions to CSV with the same syntax as target.csv
-predictions_df = pd.DataFrame({'frame': frames_test, 'value': y_pred})
+# Write predictions to CSV based on the best model
+predictions_df = pd.DataFrame({'frame': frames_test, 'value': best_y_pred})
 predictions_df.to_csv('submission/predictions.csv', index=False)
+
+print(f"Predictions saved based on the best model: {best_model_name} with Accuracy: {best_accuracy:.2f}")
 
