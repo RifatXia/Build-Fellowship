@@ -2,8 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import classification_report
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import GridSearchCV
+from sklearn.svm import SVC
 import matplotlib.pyplot as plt
 import seaborn as sns
 from tqdm import tqdm
@@ -49,7 +48,7 @@ def create_lag_features(X, window_size):
     return X_lagged.dropna()
 
 @ray.remote
-def create_model(X, y, window_size, n_estimators):
+def create_model(X, y, window_size, C, kernel, gamma):
     X_lagged = create_lag_features(X, window_size)
     y_lagged = y.iloc[window_size - 1:]
     
@@ -64,29 +63,32 @@ def create_model(X, y, window_size, n_estimators):
     y_train = y_lagged.iloc[:split_index]
     y_test = y_lagged.iloc[split_index:]
     
-    # Train and evaluate the model
-    clf = RandomForestClassifier(n_estimators=n_estimators, random_state=42)
+    # Train and evaluate the model using SVC
+    clf = SVC(C=C, kernel=kernel, gamma=gamma)
     clf.fit(X_train, y_train)
-    return window_size, n_estimators, clf.score(X_test, y_test)
+    return window_size, C, kernel, gamma, clf.score(X_test, y_test)
 
 # Define parameter grid
 param_grid = {
     'window_size': [1, 2, 5, 10, 50, 100],
-    'n_estimators': [1, 10, 25, 50, 100]
+    'C': [0.1, 1, 10],
+    'kernel': ['linear', 'rbf'],
+    'gamma': ['scale', 'auto']
 }
 
 # Initialize Ray
-ray.init(num_cpus=3)
-
+ray.init(num_cpus=2)
 
 # Perform grid search
 results = []
-total_iterations = len(param_grid['window_size']) * len(param_grid['n_estimators'])
+total_iterations = len(param_grid['window_size']) * len(param_grid['C']) * len(param_grid['kernel']) * len(param_grid['gamma'])
 futures = []
 
 for window_size in param_grid['window_size']:
-    for n_estimators in param_grid['n_estimators']:
-        futures.append(create_model.remote(X_scaled, y, window_size, n_estimators))
+    for C in param_grid['C']:
+        for kernel in param_grid['kernel']:
+            for gamma in param_grid['gamma']:
+                futures.append(create_model.remote(X_scaled, y, window_size, C, kernel, gamma))
 
 with tqdm(total=total_iterations, desc="Parameter Search") as pbar:
     while futures:
@@ -95,14 +97,14 @@ with tqdm(total=total_iterations, desc="Parameter Search") as pbar:
         pbar.update(len(done))
 
 # Convert results to DataFrame
-results_df = pd.DataFrame(results, columns=['window_size', 'n_estimators', 'score'])
+results_df = pd.DataFrame(results, columns=['window_size', 'C', 'kernel', 'gamma', 'score'])
 
 # Create heatmap
 plt.figure(figsize=(12, 8))
-pivot_table = results_df.pivot(index='window_size', columns='n_estimators', values='score')
+pivot_table = results_df.pivot_table(index='window_size', columns=['C', 'kernel', 'gamma'], values='score')
 sns.heatmap(pivot_table, annot=True, cmap='YlGnBu', fmt='.3f')
-plt.title('Model Performance: Window Size vs. Number of Estimators')
-plt.xlabel('Number of Estimators')
+plt.title('Model Performance: Window Size vs. SVC Parameters')
+plt.xlabel('SVC Parameters')
 plt.ylabel('Window Size')
 plt.tight_layout()
 plt.savefig('parameter_search_heatmap.png')
@@ -111,12 +113,14 @@ plt.close()
 # Find best parameters
 best_result = results_df.loc[results_df['score'].idxmax()]
 print(f"Best parameters: Window Size = {best_result['window_size']}, "
-      f"N Estimators = {best_result['n_estimators']}")
+      f"C = {best_result['C']}, Kernel = {best_result['kernel']}, Gamma = {best_result['gamma']}")
 print(f"Best score: {best_result['score']:.3f}")
 
 # Train final model with best parameters
 best_window_size = int(best_result['window_size'])
-best_n_estimators = int(best_result['n_estimators'])
+best_C = best_result['C']
+best_kernel = best_result['kernel']
+best_gamma = best_result['gamma']
 
 X_lagged = create_lag_features(X_scaled, best_window_size)
 y_lagged = y.iloc[best_window_size - 1:]
@@ -136,7 +140,7 @@ y_test = y_lagged.iloc[split_index:]
 frames_test = frames_lagged.iloc[split_index:]
 
 # Train final model
-clf = RandomForestClassifier(n_estimators=best_n_estimators, random_state=42)
+clf = SVC(C=best_C, kernel=best_kernel, gamma=best_gamma)
 clf.fit(X_train, y_train)
 
 # Predict on the test set
