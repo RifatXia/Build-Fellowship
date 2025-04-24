@@ -138,7 +138,7 @@ def create_analysis_plots(df, output_dir='.'):
     plt.savefig(os.path.join(output_dir, 'velocity_acceleration_plot.png'))
     plt.close()
     
-    # Plot 3: Area and aspect ratio over time
+    # Plot 3: Aspect ratio and area over time
     plt.figure(figsize=(12, 6))
     plt.subplot(2, 1, 1)
     plt.plot(df['time'], df['area'], 'g-')
@@ -156,22 +156,15 @@ def create_analysis_plots(df, output_dir='.'):
     plt.savefig(os.path.join(output_dir, 'area_aspect_ratio_plot.png'))
     plt.close()
     
-    # Plot 4: Kinetic energy and angular velocity over time
-    plt.figure(figsize=(12, 6))
-    plt.subplot(2, 1, 1)
+    # Plot 4: Kinetic energy over time
+    plt.figure(figsize=(10, 6))
     plt.plot(df['time'], df['kinetic_energy'], 'k-')
     plt.title('Kinetic Energy Over Time')
-    plt.ylabel('Kinetic Energy')
-    plt.grid(True)
-    
-    plt.subplot(2, 1, 2)
-    plt.plot(df['time'], df['angular_velocity'], 'c-')
-    plt.title('Angular Velocity Over Time')
     plt.xlabel('Time (s)')
-    plt.ylabel('Angular Velocity (rad/s)')
+    plt.ylabel('Kinetic Energy')
+
     plt.grid(True)
-    plt.tight_layout()
-    plt.savefig(os.path.join(output_dir, 'energy_angular_velocity_plot.png'))
+    plt.savefig(os.path.join(output_dir, 'kinetic_energy_plot.png'))
     plt.close()
     
     print(f"Analysis plots saved to {output_dir}")
@@ -196,4 +189,4 @@ def main():
     print("\nAnalysis complete!")
 
 if __name__ == "__main__":
-    main() 
+    main()     main() 

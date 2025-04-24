@@ -1,0 +1,86 @@
+=== ORIGINAL DATA MODELS ===
+
+Model (Original Data): Random Forest
+Class 0 - Precision: 0.88, Recall: 0.89, F1-Score: 0.88, Support: 23037.0
+Class 1 - Precision: 0.52, Recall: 0.49, F1-Score: 0.51, Support: 5578.0
+Accuracy: 0.81
+Macro Avg - Precision: 0.70, Recall: 0.69, F1-Score: 0.70
+Weighted Avg - Precision: 0.81, Recall: 0.81, F1-Score: 0.81
+
+Model (Original Data): XGBoost
+Class 0 - Precision: 0.87, Recall: 0.90, F1-Score: 0.89, Support: 23037.0
+Class 1 - Precision: 0.53, Recall: 0.46, F1-Score: 0.49, Support: 5578.0
+Accuracy: 0.81
+Macro Avg - Precision: 0.70, Recall: 0.68, F1-Score: 0.69
+Weighted Avg - Precision: 0.80, Recall: 0.81, F1-Score: 0.81
+
+Model (Original Data): Logistic Regression
+Class 0 - Precision: 0.86, Recall: 0.95, F1-Score: 0.91, Support: 23037.0
+Class 1 - Precision: 0.66, Recall: 0.37, F1-Score: 0.47, Support: 5578.0
+Accuracy: 0.84
+Macro Avg - Precision: 0.76, Recall: 0.66, F1-Score: 0.69
+Weighted Avg - Precision: 0.82, Recall: 0.84, F1-Score: 0.82
+
+Model (Original Data): Support Vector Classifier
+Class 0 - Precision: 0.87, Recall: 0.95, F1-Score: 0.91, Support: 23037.0
+Class 1 - Precision: 0.67, Recall: 0.39, F1-Score: 0.49, Support: 5578.0
+Accuracy: 0.84
+Macro Avg - Precision: 0.77, Recall: 0.67, F1-Score: 0.70
+Weighted Avg - Precision: 0.83, Recall: 0.84, F1-Score: 0.83
+
+Model (Original Data): Decision Tree
+Class 0 - Precision: 0.88, Recall: 0.85, F1-Score: 0.86, Support: 23037.0
+Class 1 - Precision: 0.44, Recall: 0.50, F1-Score: 0.47, Support: 5578.0
+Accuracy: 0.78
+Macro Avg - Precision: 0.66, Recall: 0.67, F1-Score: 0.67
+Weighted Avg - Precision: 0.79, Recall: 0.78, F1-Score: 0.78
+
+
+=== ENHANCED DATA MODELS ===
+
+Model (Enhanced Data): Random Forest
+Class 0 - Precision: 0.93, Recall: 0.83, F1-Score: 0.88, Support: 23037.0
+Class 1 - Precision: 0.52, Recall: 0.75, F1-Score: 0.61, Support: 5578.0
+Accuracy: 0.81
+Macro Avg - Precision: 0.72, Recall: 0.79, F1-Score: 0.75
+Weighted Avg - Precision: 0.85, Recall: 0.81, F1-Score: 0.83
+
+Model (Enhanced Data): XGBoost
+Class 0 - Precision: 0.96, Recall: 0.78, F1-Score: 0.86, Support: 23037.0
+Class 1 - Precision: 0.48, Recall: 0.85, F1-Score: 0.62, Support: 5578.0
+Accuracy: 0.79
+Macro Avg - Precision: 0.72, Recall: 0.82, F1-Score: 0.74
+Weighted Avg - Precision: 0.86, Recall: 0.79, F1-Score: 0.81
+
+Model (Enhanced Data): Logistic Regression
+Class 0 - Precision: 0.89, Recall: 0.93, F1-Score: 0.91, Support: 23037.0
+Class 1 - Precision: 0.65, Recall: 0.54, F1-Score: 0.59, Support: 5578.0
+Accuracy: 0.85
+Macro Avg - Precision: 0.77, Recall: 0.73, F1-Score: 0.75
+Weighted Avg - Precision: 0.85, Recall: 0.85, F1-Score: 0.85
+
+Model (Enhanced Data): Support Vector Classifier
+Class 0 - Precision: 0.94, Recall: 0.80, F1-Score: 0.86, Support: 23037.0
+Class 1 - Precision: 0.49, Recall: 0.77, F1-Score: 0.60, Support: 5578.0
+Accuracy: 0.80
+Macro Avg - Precision: 0.71, Recall: 0.79, F1-Score: 0.73
+Weighted Avg - Precision: 0.85, Recall: 0.80, F1-Score: 0.81
+
+Model (Enhanced Data): Decision Tree
+Class 0 - Precision: 0.92, Recall: 0.73, F1-Score: 0.82, Support: 23037.0
+Class 1 - Precision: 0.40, Recall: 0.75, F1-Score: 0.52, Support: 5578.0
+Accuracy: 0.74
+Macro Avg - Precision: 0.66, Recall: 0.74, F1-Score: 0.67
+Weighted Avg - Precision: 0.82, Recall: 0.74, F1-Score: 0.76
+
+
+=== COMPARISON SUMMARY ===
+
+Original Data Best Model: Support Vector Classifier with Accuracy: 0.8437
+Enhanced Data Best Model: Logistic Regression with Accuracy: 0.8535
+
+Accuracy improvement: 0.0098 (0.98%)
+
+Agreement between models: 92.10%
+Disagreement between models: 7.90%
+Number of frames with different predictions: 2261

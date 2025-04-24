@@ -1,0 +1,11 @@
+Model Comparison: Original Data vs. Enhanced Data
+
+Best model using original data: Support Vector Classifier with Accuracy: 0.8437
+Best model using enhanced data: Logistic Regression with Accuracy: 0.8535
+
+Accuracy improvement: 0.0098 (0.98%)
+
+Agreement between models: 92.10%
+Disagreement between models: 7.90%
+
+Number of frames with different predictions: 2261
