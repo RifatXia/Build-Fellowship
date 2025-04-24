@@ -1,0 +1,5 @@
+{
+  "window_size": 5,
+  "min_duration": 10,
+  "hysteresis": 0.5
+}
