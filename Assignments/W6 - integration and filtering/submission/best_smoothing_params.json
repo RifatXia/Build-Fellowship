@@ -1,0 +1,15 @@
+{
+  "window_size": 5,
+  "min_duration": 5,
+  "hysteresis": 0.6,
+  "median_window": 5,
+  "adaptive_threshold": 0,
+  "decay_factor": 0.95,
+  "neighbor_weight": 0.3,
+  "filter_chain": [
+    "median",
+    "majority",
+    "hysteresis",
+    "duration"
+  ]
+}
