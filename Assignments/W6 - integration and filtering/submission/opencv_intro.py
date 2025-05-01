@@ -3,7 +3,7 @@ import numpy as np
 import argparse
 import csv
 
-def process_frame(frame, apply_filters=True, crop=None):
+def process_frame(frame, apply_filters=True, crop=None, show_frame_number=False, frame_number=None):
     if crop:
         h, w = frame.shape[:2]
         x0, y0, crop_w, crop_h = [int(c * 0.01 * dim) for c, dim in zip(crop, [w, h, w, h])]
@@ -25,9 +25,19 @@ def process_frame(frame, apply_filters=True, crop=None):
         # Combine original frame with colored edges
         result = cv2.addWeighted(frame, 0.7, edges_color, 0.3, 0)
         
-        return result
+        processed_frame = result
     else:
-        return frame
+        processed_frame = frame
+    
+    # Add frame number on the top of the frame if requested
+    if show_frame_number and frame_number is not None:
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        text = f"Frame: {frame_number}"
+        text_size = cv2.getTextSize(text, font, 1, 2)[0]
+        text_x = (processed_frame.shape[1] - text_size[0]) // 2  # Center horizontally
+        cv2.putText(processed_frame, text, (text_x, 30), font, 1, (0, 255, 255), 2, cv2.LINE_AA)
+    
+    return processed_frame
 
 def main():
     parser = argparse.ArgumentParser(description='Process video with optional CSV frame filtering')
@@ -36,6 +46,7 @@ def main():
     parser.add_argument('--filters', action='store_true', help='Apply video effects')
     parser.add_argument('--crop', type=int, nargs=4, metavar=('X0', 'Y0', 'W', 'H'),
                         help='Crop video as percentage: x0 y0 width height')
+    parser.add_argument('--show-frame-number', action='store_true', help='Display frame number at the top of the video')
     args = parser.parse_args()
 
     # Open the input video
@@ -86,7 +97,7 @@ def main():
         # Check if we should process this frame
         if not frame_filter or frame_filter.get(frame_number, 0) == 1:
             # Process the frame
-            processed_frame = process_frame(frame, args.filters, args.crop)
+            processed_frame = process_frame(frame, args.filters, args.crop, args.show_frame_number, frame_number)
             
             # Write the processed frame to the output video
             output_video.write(processed_frame)
