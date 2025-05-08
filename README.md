@@ -1,4 +1,4 @@
-# Sports Highlight Generation System
+# Sports Highlight Reel Generation System
 
 ## Project Overview
 
