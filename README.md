@@ -6,11 +6,13 @@ This project implements an automated sports highlight detection and extraction s
 
 ## Demo
 
-Check out our generated highlight reel:
+Check out the generated highlight reel:
+
+<div align="center">
+  <iframe width="700" height="400" src="https://www.youtube.com/embed/zRsptd_gdoI" title="Sports Highlight Generator Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
 
 [![Sports Highlight Demo](https://img.youtube.com/vi/zRsptd_gdoI/0.jpg)](https://youtu.be/zRsptd_gdoI)
-
-[Watch on YouTube](https://youtu.be/zRsptd_gdoI)
 
 ## Key Features
 
@@ -52,6 +54,16 @@ Processes raw tracking data to extract motion parameters:
 - Trajectory angle and angular velocity
 - Ball area and aspect ratio changes
 
+<div align="center">
+  <img src="output/plots/velocity_acceleration_plot.png" alt="Velocity and Acceleration" width="600">
+  <p><em>Analysis of velocity and acceleration patterns during gameplay</em></p>
+</div>
+
+<div align="center">
+  <img src="output/plots/trajectory_plot.png" alt="Ball Trajectory" width="600">
+  <p><em>Ball trajectory visualization with highlighted significant movements</em></p>
+</div>
+
 ### 2. Classifier (`components/classifier.py`)
 
 Trains and evaluates multiple ML models:
@@ -61,6 +73,40 @@ Trains and evaluates multiple ML models:
 - Decision Tree: Simple tree-based classification
 
 The system compares models trained on both raw and enhanced feature sets, automatically selecting the best performing model.
+
+<div align="center">
+  <img src="output/plots/updated_accuracies.png" alt="Model Accuracies" width="600">
+  <p><em>Comparison of model accuracies using enhanced feature set</em></p>
+</div>
+
+<div align="center">
+  <img src="output/plots/accuracy_comparison.png" alt="Accuracy Comparison" width="600">
+  <p><em>Accuracy improvement using enhanced features vs. original features</em></p>
+</div>
+
+#### Model Selection Process
+
+The classifier component follows these steps to select the optimal model:
+
+1. **Training on Original Data**:
+   - Trains all models on the original tracking data
+   - Evaluates performance using a 70/30 train/test split
+   - Records accuracy, precision, recall, and F1-score
+
+2. **Training on Enhanced Data**:
+   - Repeats the process with the enhanced feature set (with added motion parameters)
+   - Creates the same evaluation metrics
+
+3. **Model Comparison**:
+   - Compares all models from both data types
+   - Selects the model with the highest accuracy
+
+In this project, the **Logistic Regression model trained on enhanced features** achieved the highest accuracy of 85.1% and was selected for highlight prediction.
+
+<div align="center">
+  <img src="output/plots/updated_Logistic Regression_confusion.png" alt="Logistic Regression Confusion Matrix" width="500">
+  <p><em>Confusion matrix for the best-performing Logistic Regression model</em></p>
+</div>
 
 ### 3. Output Filter (`components/output_filter.py`)
 
@@ -128,6 +174,11 @@ features = feature_engineer.extract_features()
 
 This creates enhanced tracking data with additional motion parameters.
 
+<div align="center">
+  <img src="output/plots/area_aspect_ratio_plot.png" alt="Area and Aspect Ratio Analysis" width="600">
+  <p><em>Ball area and aspect ratio changes during gameplay</em></p>
+</div>
+
 ### 2. Classification
 
 Multiple models are trained on both original and enhanced data:
@@ -169,6 +220,11 @@ Motion features are calculated to identify exciting moments based on ball dynami
 - Ball movement patterns strongly correlate with exciting moments in sports
 - Physics-based features (velocity, acceleration) are more interpretable
 - These features work well across different sports and scenarios
+
+<div align="center">
+  <img src="output/plots/energy_angular_velocity_plot.png" alt="Energy and Angular Velocity" width="600">
+  <p><em>Energy and angular velocity analysis for highlight detection</em></p>
+</div>
 
 ### Multi-Model Approach
 
