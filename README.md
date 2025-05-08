@@ -123,6 +123,18 @@ Extracts and compiles video highlights:
 
 ## Installation & Setup
 
+### Clone the Repository
+
+```bash
+# Clone the repository
+git clone git@github.com:RifatXia/Build-Fellowship.git
+
+# Navigate to the project directory
+cd Build-Fellowship
+```
+
+### Setup Environment
+
 1. Create a virtual environment:
    ```bash
    python -m venv mleng_env
@@ -163,24 +175,28 @@ python main.py data/tracking.csv data/target.csv data/video.mp4 output/
 Here's a complete example of running the full pipeline:
 
 ```bash
-# 1. Create and activate virtual environment
+# 1. Clone the repository
+git clone git@github.com:RifatXia/Build-Fellowship.git
+cd Build-Fellowship
+
+# 2. Create and activate virtual environment
 python -m venv mleng_env
 source mleng_env/bin/activate  # On Windows: mleng_env\Scripts\activate
 
-# 2. Install required packages
+# 3. Install required packages
 pip install -r requirements.txt
 
-# 3. Ensure the data files exist
+# 4. Ensure the data files exist
 ls data/
 # Should show: tracking.csv, target.csv, video.mp4
 
-# 4. Create output directory if it doesn't exist
+# 5. Create output directory if it doesn't exist
 mkdir -p output
 
-# 5. Run the pipeline
+# 6. Run the pipeline
 python main.py data/tracking.csv data/target.csv data/video.mp4 output/
 
-# 6. View the results
+# 7. View the results
 ls output/
 # Should include: highlights.mp4, predictions.csv, plots/, etc.
 ```
