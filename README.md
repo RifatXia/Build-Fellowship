@@ -8,11 +8,9 @@ This project implements an automated sports highlight detection and extraction s
 
 Check out the generated highlight reel:
 
-<div align="center">
-  <iframe width="700" height="400" src="https://www.youtube.com/embed/zRsptd_gdoI" title="Sports Highlight Generator Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
-
 [![Sports Highlight Demo](https://img.youtube.com/vi/zRsptd_gdoI/0.jpg)](https://youtu.be/zRsptd_gdoI)
+
+[Watch the highlight reel on YouTube](https://youtu.be/zRsptd_gdoI)
 
 ## Key Features
 
@@ -161,6 +159,35 @@ Example:
 ```bash
 python main.py data/tracking.csv data/target.csv data/video.mp4 output/
 ```
+
+### Complete Example
+
+Here's a complete example of running the full pipeline:
+
+```bash
+# 1. Create and activate virtual environment
+python -m venv mleng_env
+source mleng_env/bin/activate  # On Windows: mleng_env\Scripts\activate
+
+# 2. Install required packages
+pip install -r requirements.txt
+
+# 3. Ensure the data files exist
+ls data/
+# Should show: tracking.csv, target.csv, video.mp4
+
+# 4. Create output directory if it doesn't exist
+mkdir -p output
+
+# 5. Run the pipeline
+python main.py data/tracking.csv data/target.csv data/video.mp4 output/
+
+# 6. View the results
+ls output/
+# Should include: highlights.mp4, predictions.csv, plots/, etc.
+```
+
+This will generate a highlight video with the top 30 most significant segments from the sports video, based on ML predictions refined through our pipeline.
 
 ## Pipeline Workflow
 
