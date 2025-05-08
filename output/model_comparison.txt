@@ -1,0 +1,10 @@
+Model Comparison Report
+======================
+
+Original Data Best Model: Logistic Regression
+Original Data Accuracy: 0.841
+
+Updated Data Best Model: Logistic Regression
+Updated Data Accuracy: 0.851
+
+Improvement: 0.011

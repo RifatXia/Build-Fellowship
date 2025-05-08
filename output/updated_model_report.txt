@@ -1,0 +1,28 @@
+Model (updated Data): Random Forest
+Class 0 - Precision: 0.93, Recall: 0.83, F1-Score: 0.88, Support: 23037.0
+Class 1 - Precision: 0.51, Recall: 0.74, F1-Score: 0.60, Support: 5578.0
+Accuracy: 0.81
+Macro Avg - Precision: 0.72, Recall: 0.78, F1-Score: 0.74
+Weighted Avg - Precision: 0.85, Recall: 0.81, F1-Score: 0.82
+
+Model (updated Data): XGBoost
+Class 0 - Precision: 0.95, Recall: 0.76, F1-Score: 0.85, Support: 23037.0
+Class 1 - Precision: 0.46, Recall: 0.84, F1-Score: 0.60, Support: 5578.0
+Accuracy: 0.78
+Macro Avg - Precision: 0.71, Recall: 0.80, F1-Score: 0.72
+Weighted Avg - Precision: 0.86, Recall: 0.78, F1-Score: 0.80
+
+Model (updated Data): Logistic Regression
+Class 0 - Precision: 0.89, Recall: 0.92, F1-Score: 0.91, Support: 23037.0
+Class 1 - Precision: 0.64, Recall: 0.55, F1-Score: 0.59, Support: 5578.0
+Accuracy: 0.85
+Macro Avg - Precision: 0.77, Recall: 0.74, F1-Score: 0.75
+Weighted Avg - Precision: 0.84, Recall: 0.85, F1-Score: 0.85
+
+Model (updated Data): Decision Tree
+Class 0 - Precision: 0.91, Recall: 0.75, F1-Score: 0.82, Support: 23037.0
+Class 1 - Precision: 0.40, Recall: 0.69, F1-Score: 0.51, Support: 5578.0
+Accuracy: 0.74
+Macro Avg - Precision: 0.65, Recall: 0.72, F1-Score: 0.66
+Weighted Avg - Precision: 0.81, Recall: 0.74, F1-Score: 0.76
+
